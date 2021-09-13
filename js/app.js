@@ -61,17 +61,17 @@ const setInnerText = (id, value) => {
 // update delivery charge and total Tax
 const updateTaxAndCharge = () => {
   const currentPrice = getValue("price");
-  if (currentPrice > 200) {
-    setInnerText("delivery-charge", 30);
-    setInnerText("total-tax", currentPrice * 0.2);
-  }
-  if (currentPrice > 400) {
-    setInnerText("delivery-charge", 50);
-    setInnerText("total-tax", currentPrice * 0.3);
-  }
   if (currentPrice > 500) {
     setInnerText("delivery-charge", 60);
     setInnerText("total-tax", currentPrice * 0.4);
+  }
+  else if (currentPrice > 400) {
+    setInnerText("delivery-charge", 50);
+    setInnerText("total-tax", currentPrice * 0.3);
+  }
+  else if (currentPrice > 200) {
+    setInnerText("delivery-charge", 30);
+    setInnerText("total-tax", currentPrice * 0.2);
   }
 };
 
