@@ -4,30 +4,35 @@ const loadProducts = () => {
   showProducts(data);
 };
 
+//total product count variable
+let count = 0;
 
 // show all product in UI 
 const showProducts = (products) => {
   for (const product of products) {
-    const image = product.image;
     const div = document.createElement("div");
-    div.classList.add("product");
-    div.innerHTML = `<div class="single-product">
+    div.innerHTML = `<div class="card single-product">
       <div>
-    <img class="product-image" src=${image}></img>
+      <img class="product-image card-image-top pt-3" src=${product.image}></img>
       </div>
-      <h3>${product.title}</h3>
-      <h4><b>${product.rating.rate} <i class="fas fa-star"></i>(${product.rating.count})</b></h4>
+      <div class="card-body">
+      <p class="fs-4 fw-bold">${product.title}</p>
+      <p class="fs-5">${product.rating.rate} ${generateRatingStars(product.rating.rate)} (${product.rating.count})</p>
       <p>Category: ${product.category}</p>
-      <h2>Price: $ ${product.price}</h2>
-      <button onclick="addToCart(${product.id},${product.price})" id="addToCart-btn" class="buy-now btn btn-success">add to cart</button>
-      <button id="details-btn" class="btn btn-danger">Details</button></div>
+      </div>
+      <div class="card-footer bg-white border-0">
+      <p class="fs-4 fw-bold">$${product.price}</p>
+      <button onclick="addToCart(${product.price})" id="addToCart-btn" class="buy-now btn btn-success">Add to cart</button>
+      <button id="details-btn" class="btn btn-info">Details</button>
+      </div>
+      </div>
       `;
     document.getElementById("all-products").appendChild(div);
   }
 };
-let count = 0;
-const addToCart = (id, price) => {
-  count = count + 1;
+
+const addToCart = (price) => {
+  ++count;
   updatePrice("price", price);
   updateTaxAndCharge();
   updateTotal();
@@ -77,4 +82,30 @@ const updateTotal = () => {
     getInputValue("total-tax");
   document.getElementById("total").innerText = grandTotal.toFixed(2);
 };
+
+//generate stars accoring to rating
+const generateRatingStars = (rate) => {
+  let fullStar = '<i class="fas fa-star"></i>';
+  let halfStar = '<i class="fas fa-star-half-alt"></i>';
+  let emptyStar = '<i class="far fa-star"></i>';
+  let integer = parseInt(rate);
+  let decimal = (rate % 1).toFixed(2);
+  let remaining;
+  let stars = "";
+  for (let i = 1; i <= integer; ++i) {
+    stars += fullStar;
+  }
+  if (decimal < 0.50) {
+    remaining = 5 - integer;
+  }
+
+  if (decimal >= 0.50) {
+    stars += halfStar;
+    remaining = 5 - integer - 1;
+  }
+  for (let i = 1; i <= remaining; ++i) {
+    stars += emptyStar;
+  }
+  return stars;
+}
 loadProducts();
