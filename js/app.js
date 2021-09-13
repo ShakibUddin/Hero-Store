@@ -5,7 +5,7 @@ const loadProducts = () => {
 };
 
 //total product count variable
-let count = 0;
+let totalProduct = 0;
 
 // show all product in UI 
 const showProducts = (products) => {
@@ -32,14 +32,14 @@ const showProducts = (products) => {
 };
 
 const addToCart = (price) => {
-  ++count;
+  ++totalProduct;
   updatePrice("price", price);
   updateTaxAndCharge();
   updateTotal();
-  document.getElementById("total-Products").innerText = count;
+  document.getElementById("total-Products").innerText = totalProduct;
 };
 
-const getInputValue = (id) => {
+const getValue = (id) => {
   const element = document.getElementById(id).innerText;
   const converted = parseFloat(element);
   return converted;
@@ -47,9 +47,9 @@ const getInputValue = (id) => {
 
 // main price update function
 const updatePrice = (id, value) => {
-  const convertedOldPrice = getInputValue(id);
-  const convertPrice = parseFloat(value);
-  const total = convertedOldPrice + convertPrice;
+  const oldPrice = getValue(id);
+  const newPrice = parseFloat(value);
+  const total = oldPrice + newPrice;
   document.getElementById(id).innerText = total.toFixed(2);
 };
 
@@ -60,26 +60,26 @@ const setInnerText = (id, value) => {
 
 // update delivery charge and total Tax
 const updateTaxAndCharge = () => {
-  const priceConverted = getInputValue("price");
-  if (priceConverted > 200) {
+  const currentPrice = getValue("price");
+  if (currentPrice > 200) {
     setInnerText("delivery-charge", 30);
-    setInnerText("total-tax", priceConverted * 0.2);
+    setInnerText("total-tax", currentPrice * 0.2);
   }
-  if (priceConverted > 400) {
+  if (currentPrice > 400) {
     setInnerText("delivery-charge", 50);
-    setInnerText("total-tax", priceConverted * 0.3);
+    setInnerText("total-tax", currentPrice * 0.3);
   }
-  if (priceConverted > 500) {
+  if (currentPrice > 500) {
     setInnerText("delivery-charge", 60);
-    setInnerText("total-tax", priceConverted * 0.4);
+    setInnerText("total-tax", currentPrice * 0.4);
   }
 };
 
 //grandTotal update function
 const updateTotal = () => {
   const grandTotal =
-    getInputValue("price") + getInputValue("delivery-charge") +
-    getInputValue("total-tax");
+    getValue("price") + getValue("delivery-charge") +
+    getValue("total-tax");
   document.getElementById("total").innerText = grandTotal.toFixed(2);
 };
 
